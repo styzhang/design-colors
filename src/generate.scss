@@ -1,0 +1,201 @@
+@use 'sass:math';
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:string';
+@use 'sass:list';
+@use 'sass:meta';
+@use "./named-color" as namedColor;
+
+$_hue-step: 2; // 色相阶梯
+$_saturation-step: 0.16; // 饱和度阶梯，浅色部分
+$_saturation-step2: 0.05; // 饱和度阶梯，深色部分
+$_brightness-step1: 0.05; // 亮度阶梯，浅色部分
+$_brightness-step2: 0.15; // 亮度阶梯，深色部分
+$_light-color-count: 5; // 浅色数量，主色上
+$_dark-color-count: 4; // 深色数量，主色下
+// 暗色主题颜色映射关系表
+// index: 主色板里对应的索引
+$_dark-color-map: (
+  1: (index: 7, opacity: 0.15),
+  2: (index: 6, opacity: 0.25),
+  3: (index: 5, opacity: 0.3),
+  4: (index: 5, opacity: 0.45),
+  5: (index: 5, opacity: 0.65),
+  6: (index: 5, opacity: 0.85),
+  7: (index: 4, opacity: 0.9),
+  8: (index: 3, opacity: 0.95),
+  9: (index: 2, opacity: 0.97),
+  10: (index: 1, opacity: 0.98),
+);
+
+@function _toHsv ($color) {
+  $r: color.red($color);
+  $g: color.green($color);
+  $b: color.blue($color);
+  $max: math.max($r, $g, $b);
+  $min: math.min($r, $g, $b);
+  $d: $max - $min;
+  $v: math.div($max, 255);
+  $h: 0;
+  $s: if($max == 0, 0, math.div($d, $max));
+  @if $max == $min {
+    $h: 0
+  } @else {
+    @if $max == $r {
+      $h: math.div($g - $b, $d) + if($g < $b, 6, 0);
+    } @else if $max == $g {
+      $h: math.div($b - $r, $d) + 2;
+    } @else if $max == $b {
+      $h: math.div($r - $g, $d) + 4;
+    }
+    $h: $h * 60;
+  }
+  @return (h: $h, s: $s, v: $v);
+}
+
+/**
+ * @return 16进制字符串
+ * 不能当做sass color类型用，即使有通过string.unquote处理去掉引号
+ */
+@function _toHex ($color) {
+  @return string.unquote('\##{string.slice(ie-hex-str($color), 4)}');
+}
+
+@function _mix ($color1, $color2, $amount) {
+  $p: math.div($amount, 100);
+  $r: (color.red($color2) - color.red($color1)) * $p + color.red($color1);
+  $g: (color.green($color2) - color.green($color1)) * $p + color.green($color1);
+  $b: (color.blue($color2) - color.blue($color1)) * $p + color.blue($color1);
+  @return rgb($r, $g, $b);
+}
+
+@function _getHue($hsv, $i, $light: false) {
+  $h: map.get($hsv, h);
+  @if (math.round($h) >= 60 and $h <=240) {
+    $h: if($light, math.round($h) - $_hue-step * $i, math.round($h) + $_hue-step * $i);
+  } @else {
+    $h: if($light, math.round($h) + $_hue-step * $i, math.round($h) - $_hue-step * $i);
+  }
+  @if ($h < 0) {
+    $h: $h + 360;
+  } @else if ($h >= 360) {
+    $h: $h - 360
+  }
+  @return $h;
+}
+
+@function _toFixed($number, $digits) {
+  $pow: math.pow(10, $digits);
+  $rounded: math.round($number * $pow);
+  @return math.div($rounded, $pow);
+}
+
+@function _getSaturation($hsv, $i, $light: false) {
+  $h: map.get($hsv, h);
+  $s: map.get($hsv, s);
+  @if ($h == 0 and $s == 0) {
+    @return $s;
+  }
+  @if ($light) {
+    $s: $s - $_saturation-step * $i;
+  } @else if($i == $_dark-color-count) {
+    $s: $s + $_saturation-step;
+  } @else {
+    $s: $s + $_saturation-step2 * $i;
+  }
+  $s: if($s > 1, 1, $s);
+  @if ($light and $i == $_light-color-count and $s > 0.1) {
+    $s: 0.1;
+  }
+  $s: if($s < 0.06, 0.06, $s);
+  @return _toFixed($s, 2);
+}
+
+@function _getValue ($hsv, $i, $light: false) {
+  $v: map.get($hsv, v);
+  @if ($light) {
+    $v: $v + $_brightness-step1 * $i;
+  } @else {
+    $v: $v - $_brightness-step2 * $i;
+  }
+  $v: if($v > 1, 1, $v);
+  @return _toFixed($v, 2);
+}
+
+@function _hsvToRgb ($hsv) {
+  $h: map.get($hsv, h);
+  $s: map.get($hsv, s);
+  $v: map.get($hsv, v);
+  $h: math.div($h, 60);
+  $hi: math.floor($h);
+  $f: $h - $hi;
+  $p: $v * (1 - $s);
+  $q: $v * (1 - $f * $s);
+  $t: $v * (1 - (1 - $f) * $s);
+  // sass list index从1开始，所以这儿+1
+  $mod: $hi % 6 + 1;
+  $r: list.nth([$v, $q, $p, $p, $t, $v], $mod);
+  $g: list.nth([$t, $v, $v, $q, $p, $p], $mod);
+  $b: list.nth([$p, $p, $t, $v, $v, $q], $mod);
+  @return rgb($r * 255, $g * 255, $b * 255);
+}
+
+@function _rgbToHex ($color) {
+  $r: math.round(color.red($color));
+  $g: math.round(color.green($color));
+  $b: math.round(color.blue($color));
+  $hex: color.mix(rgb($r, $g, $b), #000, 100%);
+  $temp: map.get(namedColor.$color-map, $hex);
+  // mix会返回具名颜色，具名颜色统一处理成16进制
+  $hex: if($temp, $temp, $hex);
+  @return $hex;
+}
+
+@function _toRgb ($color) {
+  $r: color.red($color);
+  $g: color.green($color);
+  $b: color.blue($color);
+  @return rgb($r, $g, $b);
+}
+
+@function generate ($color, $options: null) {
+  $patterns: [];
+  $hsv: _toHsv($color);
+  @for $i from $_light-color-count through 1 {
+    $h: _getHue($hsv, $i, true);
+    $s: _getSaturation($hsv, $i, true);
+    $v: _getValue($hsv, $i, true);
+    $rgb: _hsvToRgb((h: $h, s: $s, v: $v));
+    $hex: _rgbToHex($rgb);
+    $patterns: list.append($patterns, $hex, 'comma');
+  }
+  $patterns: list.append($patterns, _rgbToHex(_toRgb($color)), 'comma');
+  @for $i from 1 through $_dark-color-count {
+    $h: _getHue($hsv, $i);
+    $s: _getSaturation($hsv, $i);
+    $v: _getValue($hsv, $i);
+    $rgb: _hsvToRgb((h: $h, s: $s, v: $v));
+    $hex: _rgbToHex($rgb);
+    $patterns: list.append($patterns, $hex, 'comma');
+  }
+  // dark theme patterns
+  @if (meta.type-of($options) == 'map' and map.get($options, theme) == 'dark') {
+    $darkPatterns: [];
+    @each $index, $map in $_dark-color-map {
+      $bg: map.get($options, backgroundColor);
+      $bg: if($bg, $bg, #141414);
+      $color1: $bg;
+      $color2: list.nth($patterns, map.get($map, index) + 1);
+      $mix: _mix($color1, $color2, map.get($map, opacity) * 100);
+      $darkPatterns: list.append($darkPatterns, _rgbToHex($mix), 'comma');
+    }
+    @return $darkPatterns;
+  }
+  @return $patterns;
+}
+
+/**
+ * @return TODO
+ */
+@function markColor ($color) {
+}

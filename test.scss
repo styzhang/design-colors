@@ -1,0 +1,18 @@
+@use "sass:color";
+@use "sass:map";
+@use "index" as designColors with (
+  // override
+  $preset-primary-colors: (
+    //blue: #1355Fd,
+  )
+);
+@debug '=====blue=====' designColors.$blue;
+@debug '=====red=====' designColors.$red;
+@debug '=====green=====' designColors.$green;
+@debug '=====orange=====' designColors.$orange;
+@debug '=====yellow=====' designColors.$yellow;
+@debug '=====purple=====' designColors.$purple;
+@debug '=====pink=====' designColors.$pink;
+@debug '=====cyan=====' designColors.$cyan;
+@debug '=====custom generate=====' designColors.generate(#0d91f3);
+@debug '=====custom generate for dark=====' designColors.generate(#0d91f3, (theme: dark, backgroundColor: #941414));

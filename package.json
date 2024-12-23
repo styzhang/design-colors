@@ -1,0 +1,37 @@
+{
+  "name": "@sdsjs/design-colors",
+  "version": "1.0.0",
+  "description": "SCSS/Sass Implementation for Ant Design Colors",
+  "main": "index.scss",
+  "files": [
+    "src",
+    "index.scss",
+    "test.scss"
+  ],
+  "scripts": {
+    "test": "npx sass test.scss",
+    "prepare": "npx ts-node generate-presets.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/styzhang/design-colors.git"
+  },
+  "keywords": [
+    "ant-design-colors",
+    "scss",
+    "sass",
+    "colors"
+  ],
+  "author": "styzhang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/styzhang/design-colors/issues"
+  },
+  "homepage": "https://github.com/styzhang/design-colors#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "sass": "^1.54.0",
+    "typescript": "^4.9.5",
+    "@types/node": "^16.17.0"
+  }
+}
