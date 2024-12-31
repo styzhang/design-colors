@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "test": "npx sass test.scss",
-    "prepare": "npx ts-node generate-presets.ts"
+    "prepare": "npx tsc generate-presets.ts && node generate-presets.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,10 @@
     "sass",
     "colors"
   ],
-  "author": "styzhang",
+  "author": {
+    "name": "styzhang",
+    "email": "styzhang@aliyun.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/styzhang/design-colors/issues"
