@@ -1,4 +1,10 @@
 # design-colors
+<p>
+  <a href="https://www.npmjs.com/package/@sdsjs/design-colors">
+    <img src="https://img.shields.io/npm/v/@sdsjs/design-colors.svg">
+  </a>
+</p>
+
 SCSS/Sass implementation for [Ant Design Colors](https://github.com/ant-design/ant-design-colors)
 
 ## Install
