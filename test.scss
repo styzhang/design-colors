@@ -3,7 +3,7 @@
 @use "index" as designColors with (
   // override
   $preset-primary-colors: (
-    //blue: #1355Fd,
+    //blue: #0d91f3,
   )
 );
 @debug '=====blue=====' designColors.$blue;
