@@ -1,6 +1,6 @@
 {
   "name": "@sdsjs/design-colors",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SCSS/Sass Implementation for Ant Design Colors",
   "main": "index.scss",
   "files": [
@@ -33,7 +33,7 @@
   "homepage": "https://github.com/styzhang/design-colors#readme",
   "dependencies": {},
   "devDependencies": {
-    "sass": "^1.54.0",
+    "sass": "^1.83.1",
     "typescript": "^4.9.5",
     "@types/node": "^16.17.0"
   }

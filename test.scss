@@ -3,16 +3,26 @@
 @use "index" as designColors with (
   // override
   $preset-primary-colors: (
-    //blue: #0d91f3,
+    //'blue': #0d91f3,
   )
 );
-@debug '=====blue=====' designColors.$blue;
-@debug '=====red=====' designColors.$red;
-@debug '=====green=====' designColors.$green;
-@debug '=====orange=====' designColors.$orange;
-@debug '=====yellow=====' designColors.$yellow;
-@debug '=====purple=====' designColors.$purple;
-@debug '=====pink=====' designColors.$pink;
-@debug '=====cyan=====' designColors.$cyan;
-@debug '=====custom generate=====' designColors.generate(#0d91f3);
-@debug '=====custom generate for dark=====' designColors.generate(#0d91f3, (theme: dark, backgroundColor: #941414));
+$custom: designColors.generate(#0d91f3);
+$customDark: designColors.generate(#0d91f3, (theme: dark, backgroundColor: #141414));
+@debug 'blue:                     ' designColors.$blue designColors.$blue == [#e6f1ff, #b5d4ff, #8cb8ff, #639aff, #3b79ff, #1355ff, #0439d9, #0027b3, #001a8c, #000f66];
+@debug 'red:                      ' designColors.$red designColors.$red == [#ffe9e6, #ffbab3, #ff928a, #ff6661, #f23535, #e50e15, #bf020f, #99000f, #73000f, #4d000d];
+@debug 'green:                    ' designColors.$green designColors.$green == [#e1faea, #98edbb, #6ce0a0, #44d489, #20c776, #00b966, #009456, #006e44, #00472e, #002117];
+@debug 'orange:                   ' designColors.$orange designColors.$orange == [#fff3e6, #ffd1a3, #ffb87a, #ff9d52, #ff7e29, #fb5d01, #d44700, #ad3400, #872400, #611700];
+@debug 'yellow:                   ' designColors.$yellow designColors.$yellow == [#fffbe6, #ffefb0, #ffe387, #ffd45e, #fabf34, #eda20d, #c77e00, #a16000, #7a4500, #542d00];
+@debug 'purple:                   ' designColors.$purple designColors.$purple == [#fbf0ff, #f5e0ff, #e6b8ff, #cc89f5, #ae5de8, #9135dc, #6e22b5, #4f148f, #340969, #1f0542];
+@debug 'pink:                     ' designColors.$pink  designColors.$pink == [#fff0f6, #ffe0ed, #ffb8d8, #f78bbf, #eb5ea7, #de3692, #b8237a, #911461, #6b0a49, #450631];
+@debug 'cyan:                     ' designColors.$cyan designColors.$cyan == [#e6fffb, #aaf2e9, #7ce6db, #52d9d0, #2dccc7, #0bbebe, #029499, #006b73, #00454d, #002126];
+@debug 'blue dark:                ' designColors.$blue-dark designColors.$blue-dark == [#11172c, #101d45, #14285b, #14317e, #133ead, #134bdc, #376fe8, #5f93f3, #88b3f8, #b2d0fa];
+@debug 'red dark:                 ' designColors.$red-dark designColors.$red-dark == [#281113, #3f1013, #531214, #721114, #9c1015, #c60f15, #dc3232, #f3625d, #f88e86, #fab7b0];
+@debug 'green dark:               ' designColors.$green-dark designColors.$green-dark == [#11221b, #0f3425, #0e462d, #0b5e39, #077f49, #03a05a, #1fb56c, #42ca83, #69da9c, #95e9b8];
+@debug 'orange dark:              ' designColors.$orange-dark designColors.$orange-dark == [#2b1911, #44210f, #592a0e, #7c350b, #aa4308, #d85204, #e87327, #f3964f, #f8b377, #facda0];
+@debug 'yellow dark:              ' designColors.$yellow-dark designColors.$yellow-dark == [#291f11, #412f0f, #553f12, #765411, #a1700f, #cc8d0e, #e3ae31, #f3ca5a, #f8dd84, #faebad] ;
+@debug 'purple dark:              ' designColors.$purple-dark designColors.$purple-dark == [#1d1426, #2b183c, #3a1e50, #4c236e, #652996, #7e30be, #9f56d3, #c383ea, #e0b3f8, #f1dcfa];
+@debug 'pink dark:                ' designColors.$pink-dark  designColors.$pink-dark == [#271420, #3d182e, #511e3a, #6f234d, #972a66, #c0317f, #d65798, #ec85b6, #f8b3d2, #fadce9];
+@debug 'cyan dark:                ' designColors.$cyan-dark designColors.$cyan-dark == [#112122, #103435, #114747, #106161, #0e8383, #0ca5a5, #2bbab5, #4fcfc7, #79e0d5, #a7eee5];
+@debug 'custom generate:          ' $custom $custom == [#e6f8ff, #b0e7ff, #87d7ff, #5ec4ff, #36aeff, #0d91f3, #006dcc, #0053a6, #003c80, #002759];
+@debug 'custom generate for dark: ' $customDark $customDark == [#111d2a, #0f2a42, #123a57, #114c78, #0f65a5, #0e7ed2, #339fe8, #5abbf3, #84d1f8, #ade3fa];

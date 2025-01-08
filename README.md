@@ -39,14 +39,14 @@ npm install @sdsjs/design-colors --save-dev
 
 ```scss
 (
-  blue: #1355FF,
-  red: #E50E15,
-  green: #00B966,
-  orange: #FB5D01,
-  yellow: #EDA20D,
-  purple: #9135DC,
-  pink: #DE3692,
-  cyan: #0BBEBE
+  'blue': #1355FF,
+  'red': #E50E15,
+  'green': #00B966,
+  'orange': #FB5D01,
+  'yellow': #EDA20D,
+  'purple': #9135DC,
+  'pink': #DE3692,
+  'cyan': #0BBEBE
 )
 ```
 
@@ -56,7 +56,7 @@ npm install @sdsjs/design-colors --save-dev
 // override blue primary color 
 @use "@sdsjs/design-colors" as designColors with (
   $preset-primary-colors: (
-    blue: #0d91f3,
+    'blue': #0d91f3,
   )
 );
 
