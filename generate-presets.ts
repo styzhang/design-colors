@@ -15,6 +15,7 @@ const presetPrimaryColors: Record<string, string> = {
 
 // TODO: add dark neutral colors
 const neutralColors = [
+  '#FFFFFF',
   '#F3F3F4',
   '#EEEEF0',
   '#E7E8EB',

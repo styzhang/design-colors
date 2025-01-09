@@ -1,6 +1,6 @@
 {
   "name": "@sdsjs/design-colors",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "SCSS/Sass Implementation for Ant Design Colors",
   "main": "index.scss",
   "files": [
