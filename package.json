@@ -2,15 +2,15 @@
   "name": "@sdsjs/design-colors",
   "version": "1.0.2",
   "description": "SCSS/Sass Implementation for Ant Design Colors",
-  "main": "index.scss",
+  "main": "./dist/index.scss",
   "files": [
-    "src",
-    "index.scss",
-    "test.scss"
+    "dist"
   ],
   "scripts": {
     "test": "npx sass test.scss",
-    "prepare": "npx tsc generate-presets.ts && node generate-presets.js"
+    "build": "npx tsc -p tsconfig.esm.build.json && npx tsc -p tsconfig.build.json && npx ts-node build/index.ts",
+    "example": "npx ts-node example/generate.ts",
+    "prepare": "npx ts-node generate-presets.ts && npm run build"
   },
   "repository": {
     "type": "git",

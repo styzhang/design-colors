@@ -16,16 +16,16 @@ $_dark-color-count: 4; // 深色数量，主色下
 // 暗色主题颜色映射关系表
 // index: 主色板里对应的索引
 $_dark-color-map: (
-  1: (index: 7, opacity: 0.15),
-  2: (index: 6, opacity: 0.25),
-  3: (index: 5, opacity: 0.3),
-  4: (index: 5, opacity: 0.45),
-  5: (index: 5, opacity: 0.65),
-  6: (index: 5, opacity: 0.85),
-  7: (index: 4, opacity: 0.9),
-  8: (index: 3, opacity: 0.95),
-  9: (index: 2, opacity: 0.97),
-  10: (index: 1, opacity: 0.98),
+  1: (index: 7, amount: 15),
+  2: (index: 6, amount: 25),
+  3: (index: 5, amount: 30),
+  4: (index: 5, amount: 45),
+  5: (index: 5, amount: 65),
+  6: (index: 5, amount: 85),
+  7: (index: 4, amount: 90),
+  8: (index: 3, amount: 95),
+  9: (index: 2, amount: 97),
+  10: (index: 1, amount: 98),
 );
 
 @function _toHsv ($color) {
@@ -58,6 +58,7 @@ $_dark-color-map: (
  * 不能当做sass color类型用，即使有通过string.unquote处理去掉引号
  */
 @function _toHex ($color) {
+  $color: rgba($color);
   @return string.unquote('\##{string.slice(ie-hex-str($color), 4)}');
 }
 
@@ -118,7 +119,8 @@ $_dark-color-map: (
   } @else {
     $v: $v - $_brightness-step2 * $i;
   }
-  $v: if($v > 1, 1, $v);
+  // 0~1
+  $v: math.max(0, math.min(1, $v));
   @return _toFixed($v, 2);
 }
 
@@ -181,12 +183,12 @@ $_dark-color-map: (
   // dark theme patterns
   @if (meta.type-of($options) == 'map' and map.get($options, theme) == 'dark') {
     $darkPatterns: [];
+    $bg: map.get($options, backgroundColor);
+    $bg: if($bg, $bg, #141414);
+    $color1: $bg;
     @each $index, $map in $_dark-color-map {
-      $bg: map.get($options, backgroundColor);
-      $bg: if($bg, $bg, #141414);
-      $color1: $bg;
       $color2: list.nth($patterns, map.get($map, index) + 1);
-      $mix: _mix($color1, $color2, map.get($map, opacity) * 100);
+      $mix: _mix($color1, $color2, map.get($map, amount));
       $darkPatterns: list.append($darkPatterns, _rgbToHex($mix), 'comma');
     }
     @return $darkPatterns;

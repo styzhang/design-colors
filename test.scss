@@ -1,6 +1,6 @@
 @use "sass:color";
 @use "sass:map";
-@use "index" as designColors with (
+@use "src/index" as designColors with (
   // override
   $preset-primary-colors: (
     //'blue': #0d91f3,

@@ -1,0 +1,22 @@
+@use "./var" as *;
+
+// export default { blue: ... } for ts/js
+:export {
+  blue: $blue
+}
+
+// export const palettes1 = { gray: ... } for ts/js
+:export[palettes1] {
+  gray: $gray
+}
+
+/**
+ * export const green = [...];
+ * green.primary = green[5];
+ * export const palettes2 = { green: green }
+ * for ts/js
+ */
+:export[palettes2] {
+  green: $green;
+  greenConst: unquote("green");
+}

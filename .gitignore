@@ -130,3 +130,7 @@ dist
 .pnp.*
 
 src/presets.scss
+src/presets.ts
+src/presets-export.scss
+
+example/colors.ts
